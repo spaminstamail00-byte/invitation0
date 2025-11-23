@@ -39,6 +39,19 @@
         .btn:hover {
             background-color: #218838;
         }
+        .copy-btn {
+            padding: 5px 10px;
+            font-size: 0.8em;
+            color: #fff;
+            background-color: #6c757d;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .copy-btn:hover {
+            background-color: #5a6268;
+        }
         img {
             max-width: 100%;
             height: auto;
@@ -56,7 +69,8 @@
         </p>
         <p>
             <b>장소:</b> 고 금기 객잔(1동탄)<br>
-            경기도 화성시 동탄지성로 221 1층
+            <span id="address">경기도 화성시 동탄지성로 221 1층</span>
+            <button onclick="copyAddress()" class="copy-btn">주소 복사</button>
         </p>
         
         <!-- 식당 이미지를 여기에 추가하세요. src의 URL을 실제 이미지 주소로 바꾸세요. -->
@@ -69,5 +83,22 @@
         </p>
         <p>2025년 행복한 연말 되시기 바랍니다.</p>
     </div>
+
+    <script>
+        function copyAddress() {
+            const address = document.getElementById('address').innerText;
+            navigator.clipboard.writeText(address).then(() => {
+                const copyBtn = document.querySelector('.copy-btn');
+                const originalText = copyBtn.innerText;
+                copyBtn.innerText = '복사 완료!';
+                setTimeout(() => {
+                    copyBtn.innerText = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                alert('주소 복사에 실패했습니다.');
+            });
+        }
+    </script>
 </body>
 </html>
