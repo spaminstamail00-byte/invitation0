@@ -98,6 +98,43 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
+        .image-link-wrapper {
+            position: relative;
+            display: inline-block; /* To make the wrapper fit the image size */
+        }
+
+        .image-overlay-link {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            z-index: 2;
+            /* background-color: rgba(255, 0, 0, 0.2); */ /* Uncomment for debugging */
+        }
+
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            position: fixed;
+            z-index: 101;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: visibility 0s, opacity 0.5s linear;
+        }
+
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -105,7 +142,10 @@
         <div class="top-space"></div>
         <img src="invitation_1.jpg" alt="초대장 1">
         <div class="image-padding"></div>
-        <img src="invitation_2.jpg" alt="초대장 2">
+        <div class="image-link-wrapper">
+            <a href="https://map.naver.com/p/entry/place/19796350?c=15.00,0,0,0,dh&placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202511242025&locale=ko&svcName=map_pcv5" class="image-overlay-link" id="mapLink"></a>
+            <img src="invitation_2.jpg" alt="초대장 2">
+        </div>
     </div>
 
     <div class="interactive-text">
@@ -126,6 +166,9 @@
             <p id="copyStatus" style="margin-top: 10px; color: green;"></p>
         </div>
     </div>
+
+    <!-- Toast Notification -->
+    <div id="toast">네이버 링크로 이동합니다</div>
 
     <script>
         const addressElement = document.getElementById('address');
@@ -157,6 +200,21 @@
                 closePopup();
             }
         }
+
+        // --- New script for map link ---
+        const mapLink = document.getElementById('mapLink');
+        mapLink.addEventListener('click', function(event) {
+            event.preventDefault(); // Stop the link from navigating immediately
+            
+            const toast = document.getElementById('toast');
+            toast.className = 'show'; // Show the toast
+
+            // After a short delay, hide the toast and navigate
+            setTimeout(function() {
+                toast.className = toast.className.replace('show', '');
+                window.location.href = mapLink.href;
+            }, 1500); // 1.5 seconds delay
+        });
     </script>
 </body>
 </html>
