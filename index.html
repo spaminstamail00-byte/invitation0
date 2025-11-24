@@ -19,13 +19,43 @@
             height: auto;
             display: block;
             margin: 0 auto;
+            border: 8px solid gold;
+            box-sizing: border-box;
+        }
+        .top-image-wrapper {
+            position: relative;
+        }
+        .scroll-padding {
+            background-color: white;
+            height: 30vh;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            transition: height 0.5s ease-in-out;
+        }
+        .scroll-padding.hidden {
+            height: 0;
         }
     </style>
 </head>
 <body>
     <div class="image-container">
-        <img src="invitation_1.jpg" alt="초대장 1">
+        <div class="top-image-wrapper">
+            <div class="scroll-padding"></div>
+            <img src="invitation_1.jpg" alt="초대장 1">
+        </div>
         <img src="invitation_2.jpg" alt="초대장 2">
     </div>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const padding = document.querySelector('.scroll-padding');
+            if (window.scrollY > 50) {
+                padding.classList.add('hidden');
+            } else {
+                padding.classList.remove('hidden');
+            }
+        });
+    </script>
 </body>
 </html>
