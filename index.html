@@ -8,7 +8,8 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #fff;
+            background-color: #f0f0f0; /* A light grey background */
+            font-family: sans-serif;
         }
         .image-container {
             width: 100%;
@@ -25,17 +26,132 @@
         .top-space {
             height: 30vh;
             width: 100%;
-            text-align: right;
-            font-size: 1px; /* Make the character itself take up minimal space */
-            line-height: 30vh; /* Vertically center the character if needed, matches height */
+        }
+        .interactive-text {
+            padding: 20px;
+            text-align: center;
+            background-color: #fff;
+            margin-top: -8px; /* Overlap the bottom border of the image slightly */
+        }
+        .interactive-text p {
+            font-size: 1.2em;
+            line-height: 1.6em;
+            margin: 15px 0;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .address-text {
+            cursor: pointer;
+            color: #007bff;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+        }
+        .popup-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .copy-button {
+            padding: 10px 20px;
+            margin-top: 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <div class="image-container">
-        <div class="top-space">&nbsp;</div>
+        <div class="top-space"></div>
         <img src="invitation_1.jpg" alt="초대장 1">
         <img src="invitation_2.jpg" alt="초대장 2">
     </div>
+
+    <div class="interactive-text">
+        <p>
+            <a href="https://map.naver.com/p/entry/place/19796350?c=15.00,0,0,0,dh&placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202511242025&locale=ko&svcName=map_pcv5" target="_blank">고금기객잔 (1동탄)</a>
+        </p>
+        <p>
+            <span class="address-text" id="address">주소: 화성시 동탄지성로 221</span>
+        </p>
+    </div>
+
+    <!-- The popup for copying address -->
+    <div id="copyPopup" class="popup">
+        <div class="popup-content">
+            <span class="close-btn" onclick="closePopup()">&times;</span>
+            <p>주소를 클립보드에 복사하시겠습니까?</p>
+            <button class="copy-button" onclick="copyAddress()">주소 복사</button>
+            <p id="copyStatus" style="margin-top: 10px; color: green;"></p>
+        </div>
+    </div>
+
+    <script>
+        const addressElement = document.getElementById('address');
+        const copyPopup = document.getElementById('copyPopup');
+        const copyStatus = document.getElementById('copyStatus');
+        const addressToCopy = addressElement.innerText.replace('주소: ', ''); // Extract address
+
+        addressElement.addEventListener('click', function() {
+            copyPopup.style.display = 'flex';
+            copyStatus.innerText = '';
+        });
+
+        function closePopup() {
+            copyPopup.style.display = 'none';
+        }
+
+        function copyAddress() {
+            navigator.clipboard.writeText(addressToCopy).then(() => {
+                copyStatus.innerText = '복사 완료!';
+                setTimeout(closePopup, 1500); // Close popup after 1.5s
+            }).catch(err => {
+                copyStatus.innerText = '복사 실패!';
+            });
+        }
+
+        // Close popup if clicked outside content
+        window.onclick = function(event) {
+            if (event.target == copyPopup) {
+                closePopup();
+            }
+        }
+    </script>
 </body>
 </html>
